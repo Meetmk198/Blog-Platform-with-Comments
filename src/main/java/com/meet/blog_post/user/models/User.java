@@ -92,4 +92,11 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
+    public User(Long id) {
+        this.id = id;
+    }
+    public User() {
+
+    }
 }

@@ -2,7 +2,7 @@ package com.meet.blog_post.auth.security;
 
 import com.meet.blog_post.response.SuccessResponse;
 import com.meet.blog_post.response.TokenResponse;
-import com.meet.blog_post.user.service.MyUserDetailsService;
+import com.meet.blog_post.user.service.AuthenticationService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,12 +21,12 @@ import java.util.Date;
 public class JwtServices {
 
     @Autowired
-    MyUserDetailsService userDetailsService;
+    AuthenticationService authenticationService;
 
     public final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B625064536756685970";
     public UserDetails getUserDetailsFromToken(String token) {
         String username = extractUsernameFormClaims(token);
-        return userDetailsService.loadUserByUsername(username);
+        return authenticationService.loadUserByUsername(username);
     }
 
     private String extractUsernameFormClaims(String token) {
@@ -47,13 +47,13 @@ public class JwtServices {
 
     public boolean isValidToken(String token) {
         Date expDate = extractExpirationFormClaims(token);
-        return expDate.before(new Date());
+        return expDate.after(new Date());
     }
 
     public ResponseEntity<SuccessResponse> issueToken(String username) {
         String token= Jwts.builder().setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60)))
+                .setExpiration(new Date(System.currentTimeMillis() + (86400000)))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
 
         SuccessResponse successResponse = new SuccessResponse(HttpStatus.OK,"success",new TokenResponse(token));

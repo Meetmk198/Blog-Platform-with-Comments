@@ -19,13 +19,13 @@ public class UserDetailsServiceImpl implements MyUserDetailsService {
     UserRepo userRepo;
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username);
-    }
-
     public Optional<User> findByEmail(String email){
         return userRepo.findByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 
     @Override
@@ -37,8 +37,5 @@ public class UserDetailsServiceImpl implements MyUserDetailsService {
         return ResponseEntity.status(HttpStatus.OK).body(successResponse);
     }
 
-    @Override
-    public UserDetails findByUsername(String username) {
-        return userRepo.findByUsername(username);
-    }
+
 }

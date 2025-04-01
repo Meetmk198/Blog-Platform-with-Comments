@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/public")
 public class UserController {
@@ -48,7 +50,6 @@ public class UserController {
         } catch (Exception e) {
             throw new ApplicationException(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        String username = myUserDetailsService.findByUsername(loginDto.getUsername()).getUsername();
-        return  jwtServices.issueToken(username);
+        return  jwtServices.issueToken(loginDto.getUsername());
     }
 }

@@ -1,5 +1,6 @@
 package com.meet.blog_post.auth.security;
 
+import com.meet.blog_post.user.service.AuthenticationService;
 import com.meet.blog_post.user.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +23,7 @@ public class SecurityConfig {
     JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
-    MyUserDetailsService  myUserDetailsService;
+    AuthenticationService authenticationService;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -45,7 +46,7 @@ public class SecurityConfig {
     @Bean
     AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(myUserDetailsService);
+        daoAuthenticationProvider.setUserDetailsService(authenticationService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
