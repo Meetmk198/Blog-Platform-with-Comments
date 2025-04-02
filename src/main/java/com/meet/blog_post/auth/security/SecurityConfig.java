@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.meet.blog_post.common.constants.CmnConstants.PUBLIC_END_POINTS;
+
 @Configuration
 public class SecurityConfig {
 
@@ -31,7 +33,7 @@ public class SecurityConfig {
         httpSecurity.cors(cores -> cores.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers(PUBLIC_END_POINTS).permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

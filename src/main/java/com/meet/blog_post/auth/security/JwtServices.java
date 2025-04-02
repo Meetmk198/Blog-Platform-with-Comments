@@ -2,8 +2,10 @@ package com.meet.blog_post.auth.security;
 
 import com.meet.blog_post.response.SuccessResponse;
 import com.meet.blog_post.response.TokenResponse;
-import com.meet.blog_post.user.service.AuthenticationService;
+import com.meet.blog_post.user.models.User;
+import com.meet.blog_post.user.service.MyUserDetailsService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -11,22 +13,22 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class JwtServices {
 
     @Autowired
-    AuthenticationService authenticationService;
+    MyUserDetailsService myUserDetailsService;
 
     public final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B625064536756685970";
-    public UserDetails getUserDetailsFromToken(String token) {
+    public Optional<User> getUserDetailsFromToken(String token) {
         String username = extractUsernameFormClaims(token);
-        return authenticationService.loadUserByUsername(username);
+        return myUserDetailsService.findByUsername(username);
     }
 
     private String extractUsernameFormClaims(String token) {
@@ -47,7 +49,10 @@ public class JwtServices {
 
     public boolean isValidToken(String token) {
         Date expDate = extractExpirationFormClaims(token);
-        return expDate.after(new Date());
+        if( expDate.after(new Date()))
+            return true;
+        else
+            throw new ExpiredJwtException(null, null,"Token has expired");
     }
 
     public ResponseEntity<SuccessResponse> issueToken(String username) {
