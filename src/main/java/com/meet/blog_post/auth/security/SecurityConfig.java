@@ -17,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.meet.blog_post.common.constants.CmnConstants.PUBLIC_END_POINTS;
+import static com.meet.blog_post.common.constants.CmnConstants.PUBLIC_SWAGGER_POINTS;
 
 @Configuration
 public class SecurityConfig {
@@ -34,6 +35,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(PUBLIC_END_POINTS).permitAll()
+                        .requestMatchers(PUBLIC_SWAGGER_POINTS).permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
