@@ -12,4 +12,10 @@ public interface BlogPostService {
     ResponseEntity updateBlogById(Long userId, BlogPostMst blogPostMst, Long blogPostId);
 
     ResponseEntity deleteBlogById(Long userId, Long blogPostId);
+
+    ResponseEntity getAllBlogs();
+
+    ResponseEntity getAllBlogsByCategories(String category);
+
+    ResponseEntity getAllBlogsByTags(String tag);
 }

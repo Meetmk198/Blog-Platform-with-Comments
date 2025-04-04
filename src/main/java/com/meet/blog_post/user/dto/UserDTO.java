@@ -1,11 +1,12 @@
 package com.meet.blog_post.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 import static com.meet.blog_post.common.constants.CmnConstants.REGEX_EMAIL;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
 
     private Long id;

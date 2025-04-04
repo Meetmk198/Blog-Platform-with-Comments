@@ -32,10 +32,25 @@ public class BlogPostController {
     }
 
     @GetMapping("/")
-    public ResponseEntity getAllBlogs(){
+    public ResponseEntity getAllBlogsForUser(){
         String username = getUserId();
         Optional<User> userDetails  = myUserDetailsService.findByUsername(username);
         return blogPostService.getAllBlogsForUser(userDetails.get().getId());
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity getAllBlogs(){
+        return blogPostService.getAllBlogs();
+    }
+
+    @GetMapping("/tag/{tag}")
+    public ResponseEntity getAllBlogsByTags(@PathVariable String tag){
+        return blogPostService.getAllBlogsByTags(tag);
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity getAllBlogsByCategories(@PathVariable String category){
+        return blogPostService.getAllBlogsByCategories(category);
     }
 
     @PutMapping("/{blogPostId}")

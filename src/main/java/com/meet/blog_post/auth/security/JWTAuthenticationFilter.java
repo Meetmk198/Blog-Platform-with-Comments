@@ -4,6 +4,7 @@ import com.meet.blog_post.exception.ApplicationException;
 import com.meet.blog_post.user.dto.UserDTO;
 import com.meet.blog_post.user.dto.UserSessionInfo;
 import com.meet.blog_post.user.models.User;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     JwtServices jwtServices;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, ExpiredJwtException {
 
         // Creating UserSessionInfo object with necessary fields which can used in further business logic
         UserSessionInfo userSessionInfo = new UserSessionInfo();

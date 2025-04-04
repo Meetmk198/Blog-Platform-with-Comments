@@ -2,6 +2,7 @@ package com.meet.blog_post.blogpost.dto;
 
 import com.meet.blog_post.category.dto.CategoryDto;
 import com.meet.blog_post.category.model.Category;
+import com.meet.blog_post.comments.dto.CommentDto;
 import com.meet.blog_post.tags.dto.TagDto;
 import com.meet.blog_post.tags.model.Tag;
 import org.hibernate.validator.constraints.Length;
@@ -20,6 +21,8 @@ public class BlogPostMst {
 
     private List<TagDto> tags;
     private List<CategoryDto> categories;
+
+    private List<CommentDto> comments;
 
     public Long getBlogPostId() {
         return blogPostId;
@@ -67,5 +70,13 @@ public class BlogPostMst {
 
     public void setCategories(List<CategoryDto> categories) {
         this.categories = categories;
+    }
+
+    public List<CommentDto> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDto> comments) {
+        this.comments = comments;
     }
 }
