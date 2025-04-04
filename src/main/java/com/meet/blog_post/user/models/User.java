@@ -1,9 +1,9 @@
 package com.meet.blog_post.user.models;
 
+import com.meet.blog_post.common.models.TimeStampedBaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,7 +11,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "blog_post_users")
-public class User implements UserDetails {
+public class User extends TimeStampedBaseEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -91,5 +91,12 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+    public User(Long id) {
+        this.id = id;
+    }
+    public User() {
+
     }
 }

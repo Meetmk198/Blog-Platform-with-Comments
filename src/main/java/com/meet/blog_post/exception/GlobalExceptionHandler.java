@@ -1,6 +1,7 @@
 package com.meet.blog_post.exception;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -44,5 +45,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException exception) {
         ErrorResponse errorResponse = new ErrorResponse(exception.getStatus(),exception.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException exception){
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED,exception.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 }

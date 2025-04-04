@@ -1,5 +1,6 @@
 package com.meet.blog_post.auth.security;
 
+import com.meet.blog_post.user.service.AuthenticationService;
 import com.meet.blog_post.user.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.meet.blog_post.common.constants.CmnConstants.PUBLIC_END_POINTS;
+
 @Configuration
 public class SecurityConfig {
 
@@ -22,7 +25,7 @@ public class SecurityConfig {
     JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
-    MyUserDetailsService  myUserDetailsService;
+    AuthenticationService authenticationService;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -30,7 +33,7 @@ public class SecurityConfig {
         httpSecurity.cors(cores -> cores.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers(PUBLIC_END_POINTS).permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -45,7 +48,7 @@ public class SecurityConfig {
     @Bean
     AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(myUserDetailsService);
+        daoAuthenticationProvider.setUserDetailsService(authenticationService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
